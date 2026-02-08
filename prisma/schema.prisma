@@ -1,65 +1,69 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// =======================
+// Prisma Setup
+// =======================
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
-  
+ url= env("DATABASE_URL")
+
 }
+
+
+// =======================
+// Enums
+// =======================
 
 enum Role {
   USER
 }
 
-model User{
-  user_id     Int     @id @default(autoincrement())
-  username     String
-  email       String  @unique
-  password    String 
-  role        Role
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
 
-  documents   Document[]
-  fileActivity  FileActivity[]
+// =======================
+// Models
+// =======================
+
+model User {
+  id            String         @id @default(uuid()) @db.Uuid
+  firstName     String
+  lastName      String
+  email         String         @unique
+  password      String
+  role          Role           @default(USER)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  documents     Document[]
+  fileActivities FileActivity[]
 }
 
 model Document {
-  document_id     Int       @id      @default(autoincrement())
-  title           String
-  description     String
-  file_name       String
-  file_type       String
-  file_size       Int
-  uploaded_at     DateTime   @default(now())
-  updated_at      DateTime   @updatedAt
+  id            String         @id @default(uuid()) @db.Uuid
+  title         String
+  description   String
+  fileName      String
+  fileType      String
+  fileSize      Int
+  uploadedAt    DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 
-  user_id   Int
-  user   User @relation(fields: [user_id], references: [user_id])
+  userId        String         @db.Uuid
+  user          User           @relation(fields: [userId], references: [id])
 
-  fileActivity  FileActivity[]
-
+  fileActivities FileActivity[]
 }
 
 model FileActivity {
-  activity_id     Int    @id     @default(autoincrement())
+  id            Int            @id @default(autoincrement())
+  action        String
+  actionTime    DateTime       @default(now())
 
-  action String
-  action_type     DateTime @default(now())
+  userId        String         @db.Uuid
+  documentId    String         @db.Uuid
 
-  user_id         Int
-  document_id Int
-  
-  user User @relation(fields: [user_id], references: [user_id])
-
-  document Document @relation(fields: [document_id], references: [document_id])
-
-  
+  user          User           @relation(fields: [userId], references: [id])
+  document      Document       @relation(fields: [documentId], references: [id])
 }
