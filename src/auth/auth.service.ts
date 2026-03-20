@@ -8,8 +8,10 @@ import { LoginDto } from './dto/login.dto';
 export class AuthService {
     constructor(private prisma: PrismaService) {}
     async register(dto: RegisterDto){
+        console.log("REGISTER DATA", dto)
         const existingUser = await this.prisma.user.findUnique({
             where: {email: dto.email},
+
         })
 
         if(existingUser){
@@ -30,9 +32,13 @@ export class AuthService {
 
         const { password, ...result} = user
 
-        return result;
+        return {
+            user: result
+        }
+        
     }
-
+    
+    
     async login(dto: LoginDto){
         const user = await this.prisma.user.findUnique({
             where: {email: dto.email}
@@ -49,11 +55,31 @@ export class AuthService {
         )
 
         if(!passwordMatch){
-            throw new UnauthorizedException('Invaalid credentials')
+            throw new UnauthorizedException('Invalid credentials')
         }
 
         const {password, ...result } = user
 
         return result
     }
+
+    async logout(refreshToken: string) {
+  if (!refreshToken) {
+    throw new BadRequestException('Refresh token is required');
+  }
+
+  const token = await this.prisma.refreshToken.findUnique({
+    where: { token: refreshToken },
+  });
+
+  if (!token) throw new UnauthorizedException('Invalid refresh token');
+
+  await this.prisma.refreshToken.delete({
+    where: { token: refreshToken },
+  });
+
+  return { message: 'Logged out successfully' };
+}
+
+
 }
