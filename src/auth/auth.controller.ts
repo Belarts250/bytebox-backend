@@ -25,7 +25,7 @@ export class AuthController {
     @Post('logout')
 @HttpCode(200)
 async logout(@Body() dto: LogoutDto) {
-  // dto.refreshToken must exist
+
   if (!dto.refreshToken) {
     throw new BadRequestException('refreshToken is required');
   }
