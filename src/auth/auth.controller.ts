@@ -22,6 +22,8 @@ export class AuthController {
         return this.authService.login(dto)
     }
 
+    //logout
+  
     @Post('logout')
 @HttpCode(200)
 async logout(@Body() dto: LogoutDto) {
