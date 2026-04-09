@@ -1,9 +1,12 @@
+// documents.module.ts
 import { Module } from '@nestjs/common';
-import { DocumentsController } from './documents.controller';
 import { DocumentsService } from './documents.service';
+import { DocumentsController } from './documents.controller';
+import { PrismaModule } from 'prisma/prisma.module';// <-- import PrismaModule
 
 @Module({
+  imports: [PrismaModule], // <-- important
+  providers: [DocumentsService],
   controllers: [DocumentsController],
-  providers: [DocumentsService]
 })
 export class DocumentsModule {}
