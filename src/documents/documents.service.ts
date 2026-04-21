@@ -8,8 +8,10 @@ export class DocumentsService {
 
     async create(file: Express.Multer.File, dto: CreateDocDto, userId: string) {
         if(!file) {
-            throw new BadRequestException('File is required');
-
+            throw new BadRequestException('User not authenticated');
+            
+            }
+         
             const document = await this.prisma.document.create({
                 data: {
                     title: dto.title,
@@ -18,8 +20,7 @@ export class DocumentsService {
                     fileType: file.mimetype,
                     fileSize: file.size,
                     userId: userId,
-                }
-            });
+                   }});
 
             await this.prisma.fileActivity.create({
                 data: {
@@ -36,4 +37,4 @@ export class DocumentsService {
 
         }
     }
-}
+
