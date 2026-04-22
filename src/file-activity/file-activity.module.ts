@@ -5,6 +5,6 @@ import { DatabaseModule } from 'src/database/database.module';
 @Module({
   imports: [DatabaseModule],
   providers: [FileActivityService],
-  exports: [FileActivityService],///////// allows other modules to use FileActivityService
+  exports: [FileActivityService],
 })
 export class FileActivityModule {}
