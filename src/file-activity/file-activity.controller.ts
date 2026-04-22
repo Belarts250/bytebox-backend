@@ -13,7 +13,7 @@ export class FileActivityController {
 
   // DELETE /files/:id
   @Delete(':id')
-  deleteFile(@Param('id') id: string) {
+  deleteFile(@Param('id') id: number) {
     return this.filesActivityService.deleteFile(id);
   }
 }
