@@ -5,13 +5,11 @@ import { FileActivityService } from './file-activity.service';
 export class FileActivityController {
   constructor(private readonly filesActivityService: FileActivityService) {}
 
-  // GET /files/:type
   @Get(':type')
   findByType(@Param('type') type: string) {
     return this.filesActivityService.findByType(type);
   }
 
-  // DELETE /files/:id
   @Delete(':id')
   deleteFile(@Param('id') id: number) {
     return this.filesActivityService.deleteFile(id);
