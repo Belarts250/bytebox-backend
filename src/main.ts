@@ -10,7 +10,7 @@ async function bootstrap() {
       whitelist: true,
     })
   )
-//enable cors for all origins
+
   app.enableCors({
     origin: '*',
   });
