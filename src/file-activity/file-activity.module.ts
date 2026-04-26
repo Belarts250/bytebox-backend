@@ -7,5 +7,5 @@ import { DatabaseModule } from 'src/database/database.module';
   providers: [FileActivityService],
   exports: [FileActivityService],
 })
-
+// eslint-disable-next-line prettier/prettier
 export class FileActivityModule {}
